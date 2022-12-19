@@ -16,16 +16,16 @@ function setup() {
 }
 
 function draw() {
-  background(50);
+  background(mouseX/30,mouseY/6,random(130,180));
 
   attractor.display();
 
   for (let i = 0; i < movers.length; i++) {
     let force = attractor.calculateAttraction(movers[i]);
     movers[i].applyForce(force);
-
     movers[i].update();
     movers[i].display();
+
   }
 }
 
@@ -35,6 +35,7 @@ function mouseMoved() {
 
 function mousePressed() {
   attractor.handlePress(mouseX, mouseY);
+  
 }
 
 function mouseDragged() {
@@ -77,6 +78,9 @@ class Mover {
     strokeWeight(2);
     fill(255, 175);
     ellipse(this.position.x, this.position.y, this.mass * 16, this.mass * 16);
+        if(mousePressed){
+    line(this.position.x, this.position.y, mouseX,mouseY);
+    }
   }
 
   checkEdges() {

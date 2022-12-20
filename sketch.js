@@ -1,6 +1,4 @@
-// The Nature of Code
-// Daniel Shiffman
-// http://natureofcode.com
+
 let movers = [];
 
 let attractor;
@@ -14,17 +12,18 @@ function setup() {
 }
 
 function draw() {
-  background(50);
+  background(mouseX/30,mouseY/6,random(130,180));
 
   attractor.display();
 
   for (let i = 0; i < movers.length; i++) {
     let force = attractor.calculateAttraction(movers[i]);
     movers[i].applyForce(force);
-
     movers[i].update();
     movers[i].display();
+
   }
+
 }
 
 function mouseMoved() {
@@ -33,6 +32,7 @@ function mouseMoved() {
 
 function mousePressed() {
   attractor.handlePress(mouseX, mouseY);
+  
 }
 
 function mouseDragged() {
@@ -73,8 +73,11 @@ class Mover {
   display() {
     stroke(0);
     strokeWeight(2);
-    fill(255, 175);
+    fill(255, 255, 7);
     ellipse(this.position.x, this.position.y, this.mass * 16, this.mass * 16);
+    //if(mousePressed){
+    //line(this.position.x, this.position.y, mouseX,mouseY);
+    //}
   }
 
   checkEdges() {
@@ -130,18 +133,20 @@ class Attractor {
   // Method to display
   display() {
     ellipseMode(CENTER);
-    strokeWeight(4);
+    strokeWeight(2);
     stroke(0);
     if (this.dragging) {
-      fill(255);
+      fill(9,100,39);
     } else if (this.rollover) {
-      fill(175);
+      fill(9,30,100);
     } else {
       fill(101, 200);
     }
     ellipse(this.position.x, this.position.y, this.mass * 2, this.mass * 2);
+    line(mouseX,mouseY, this.position.x,this.position.y);
+    ellipse(mouseX,mouseY,10,10);
+    strokeWeight(3);
   }
-
 
   handlePress(mx, my) {
     let d = dist(mx, my, this.position.x, this.position.y);
@@ -156,6 +161,7 @@ class Attractor {
     let d = dist(mx, my, this.position.x, this.position.y);
     if (d < this.mass) {
       this.rollover = true;
+      
     } else {
       this.rollover = false;
     }
